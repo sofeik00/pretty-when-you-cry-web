@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Добро пожаловать</title>
+  <style>
+    @font-face {
+      font-family: 'MyHandFont';
+      src: url('myfont.ttf') format('truetype');
+    }
+
+    body {
+      position: relative;
+      background-color: #1a1a2e;
+      background-image: url('fon.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #ffd1dc;
+      font-family: 'MyHandFont', 'Comic Sans MS', cursive;
+      padding: 90px 20px 20px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      cursor: none !important;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    *, *::before, *::after { cursor: none !important; }
+
+    .top-gif-frame {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 70px;
+      background-image: url('top-frame.gif');
+      background-repeat: repeat-x;
+      background-position: top center;
+      background-size: auto 100%;
+      z-index: 9990;
+      pointer-events: none;
+    }
+
+    .flying-paw {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 2147483647;
+      transform: translate(-50%, -50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.05s ease-out;
+      background-image: url('paw1.png');
+      filter: saturate(1.6) contrast(1.1) drop-shadow(0 0 4px #ffb6c1);
+    }
+
+    /* ===== ПАНЕЛЬ АВТОРИЗАЦИИ ===== */
+    .auth-panel {
+      position: absolute;
+      top: 90px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 100;
+    }
+
+    .auth-btn {
+      color: #ffc0cb;
+      text-decoration: none;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 2px outset #ffb6c1;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 1.1em;
+      text-align: center;
+      transition: 0.2s;
+      display: block;
+    }
+
+    .auth-btn:hover {
+      background-color: rgba(255, 182, 193, 0.4);
+      color: #fff;
+    }
+
+    .my-page-btn {
+      color: #fff;
+      text-decoration: none;
+      background-color: rgba(255, 105, 180, 0.6);
+      border: 2px outset #ffb6c1;
+      padding: 8px 20px;
+      border-radius: 6px;
+      font-size: 1.2em;
+      font-weight: bold;
+      transition: 0.2s;
+      display: none;
+      text-align: center;
+    }
+
+    .my-page-btn:hover {
+      background-color: rgba(255, 105, 180, 0.9);
+      transform: scale(1.05);
+    }
+
+    .logout-btn {
+      font-size: 0.9em;
+      color: #ff9eb5;
+      text-decoration: underline;
+      margin-top: 5px;
+      display: none;
+      text-align: center;
+      cursor: none !important;
+    }
+    .logout-btn:hover { color: #fff; }
+
+    .welcome-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 30px;
+      border-radius: 15px;
+      max-width: 600px;
+      text-align: center;
+      margin-top: -50px;
+    }
+
+    .welcome-box h1 {
+      color: #ffb6c1;
+      font-size: 2.2em;
+      margin-top: 0;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 0px #000;
+    }
+
+    .welcome-box p {
+      font-size: 1.2em;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-box {
+      background-color: #1a1a2e;
+      border: 3px outset #ffb6c1;
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+    }
+
+    .modal-box h2 {
+      color: #ffb6c1;
+      margin-top: 0;
+      font-size: 1.8em;
+    }
+
+    .modal-box input[type="text"],
+    .modal-box input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px inset #ffb6c1;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1.1em;
+      box-sizing: border-box;
+      cursor: none !important;
+    }
+
+    .modal-box input:focus {
+      outline: none;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .remember-label {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: 0.95em;
+      color: #ffd1dc;
+      margin: 10px 0;
+      cursor: none !important;
+    }
+    .remember-label input[type="checkbox"] {
+      margin-right: 8px;
+      width: 18px;
+      height: 18px;
+      cursor: none !important;
+    }
+
+    .submit-btn {
+      background-color: rgba(255, 105, 180, 0.6);
+      color: #fff;
+      border: 2px outset #ffb6c1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 1.2em;
+      font-family: inherit;
+      cursor: none !important;
+      transition: 0.2s;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .submit-btn:hover { background-color: rgba(255, 105, 180, 0.9); }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #ffb6c1;
+      font-size: 1.5em;
+      text-decoration: none;
+    }
+
+    .error-msg {
+      color: #ff6b6b;
+      font-size: 0.9em;
+      margin-top: 10px;
+      height: 1em;
+    }
+
+    .player {
+      position: fixed;
+      bottom: 15px; right: 15px;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 6px; border-radius: 8px;
+      display: flex; align-items: center; gap: 6px;
+      width: 260px; height: 90px;
+    }
+    .player audio { width: 190px; height: 40px; }
+    .player audio::-webkit-media-controls-time-remaining-display,
+    .player audio::-webkit-media-controls-current-time-display { display: none; }
+    .player img {
+      width: 55px; height: 55px;
+      object-fit: cover; border: 2px solid #ffb6c1; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-gif-frame"></div>
+  <div class="flying-paw"></div>
+
+  <!-- Панель кнопок -->
+  <div class="auth-panel">
+    <!-- Блок для гостей -->
+    <div id="guestButtons">
+      <a href="#" class="auth-btn" onclick="openLogin()">Войти</a>
+      <a href="#" class="auth-btn" onclick="openRegister()">Зарегистрироваться</a>
+    </div>
+    
+    <!-- Блок для авторизованных -->
+    <div id="userButtons" style="display: none; text-align: center;">
+      <a href="my-page.html" class="my-page-btn" id="dynamicMyPageBtn" style="display: inline-block; margin-bottom: 10px;">📖 Моя страничка</a>
+      <a href="#" class="logout-btn" onclick="doLogout()" style="display: block;">Выйти</a>
+    </div>
+  </div>
+
+  <div class="welcome-box">
+    <h1>Добро пожаловать!</h1>
+    <p>Это моя маленькая вселенная в интернете.<br>Тут живут мои мысли, фото и музыка.</p>
+  </div>
+
+  <div class="modal-overlay" id="loginModal">
+    <div class="modal-box">
+      <a href="#" class="close-btn" onclick="closeModal('loginModal')">×</a>
+      <h2>Вход</h2>
+      <input type="text" id="loginNick" placeholder="Ваш ник">
+      <input type="password" id="loginPass" placeholder="Пароль">
+      <label class="remember-label">
+        <input type="checkbox" id="rememberMe"> Запомнить меня
+      </label>
+      <button class="submit-btn" onclick="doLogin()">Войти</button>
+      <div class="error-msg" id="loginError"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="registerModal">
+    <div class="modal-box">
+      <a href="#" class="close-btn" onclick="closeModal('registerModal')">×</a>
+      <h2>Регистрация</h2>
+      <input type="text" id="regNick" placeholder="Придумайте ник">
+      <input type="password" id="regPass" placeholder="Придумайте пароль">
+      <button class="submit-btn" onclick="doRegister()">Создать аккаунт</button>
+      <div class="error-msg" id="regError"></div>
+    </div>
+  </div>
+
+  <div class="player">
+    <img src="cover.jpg" alt="Обложка">
+    <audio controls loop id="myMusic">
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    // === ФУНКЦИЯ ПРОВЕРКИ СТАТУСА ===
+    function checkLoginStatus() {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+      const loggedInUser = localStorage.getItem('userNick') || '';
+
+      const guestButtons = document.getElementById('guestButtons');
+      const userButtons = document.getElementById('userButtons');
+      const dynamicBtn = document.getElementById('dynamicMyPageBtn');
+
+      if (isLoggedIn && loggedInUser !== '') {
+        guestButtons.style.display = 'none';
+        userButtons.style.display = 'block';
+
+        // Проверяем, если это Кексик — на старую страницу, иначе — на новую
+        if (loggedInUser.toLowerCase() === 'кексик') {
+          dynamicBtn.href = 'my-page.html';
+        } else {
+          dynamicBtn.href = 'user-page.html';
+        }
+      } else {
+        guestButtons.style.display = 'block';
+        userButtons.style.display = 'none';
+      }
+    }
+
+    // Вызываем проверку сразу после загрузки страницы
+    window.onload = checkLoginStatus;
+
+    // === УПРАВЛЕНИЕ ОКНАМИ ===
+    function openLogin() {
+      document.getElementById('loginModal').classList.add('active');
+      document.getElementById('loginError').innerText = '';
+      checkSavedLogin(); 
+    }
+
+    function openRegister() {
+      document.getElementById('registerModal').classList.add('active');
+      document.getElementById('regError').innerText = '';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // === АВТОЗАПОЛНЕНИЕ ===
+    function checkSavedLogin() {
+      const savedUser = localStorage.getItem('savedUser');
+      const savedPass = localStorage.getItem('savedPass');
+      if (savedUser && savedPass) {
+        document.getElementById('loginNick').value = savedUser;
+        document.getElementById('loginPass').value = savedPass;
+        document.getElementById('rememberMe').checked = true;
+      }
+    }
+
+    // === РЕГИСТРАЦИЯ ===
+    function doRegister() {
+      const nick = document.getElementById('regNick').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
+      const error = document.getElementById('regError');
+
+      if (!nick || !pass) {
+        error.innerText = 'Пожалуйста, заполните все поля!';
+        return;
+      }
+
+      localStorage.setItem('userNick', nick);
+      localStorage.setItem('userPass', pass);
+
+      alert(`Аккаунт "${nick}" успешно создан! Теперь вы можете войти.`);
+      closeModal('registerModal');
+      openLogin();
+    }
+
+    // === ВХОД ===
+    function doLogin() {
+      const nick = document.getElementById('loginNick').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+      const remember = document.getElementById('rememberMe').checked;
+      const error = document.getElementById('loginError');
+
+      const savedNick = localStorage.getItem('userNick');
+      const savedPass = localStorage.getItem('userPass');
+
+      if (!savedNick || !savedPass) {
+        error.innerText = 'Аккаунтов пока нет. Сначала зарегистрируйтесь!';
+        return;
+      }
+
+      if (nick.toLowerCase() === savedNick.toLowerCase() && pass === savedPass) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userNick', nick); // Запоминаем вошедшего
+
+        if (remember) {
+          localStorage.setItem('savedUser', nick);
+          localStorage.setItem('savedPass', pass);
+        } else {
+          localStorage.removeItem('savedUser');
+          localStorage.removeItem('savedPass');
+        }
+
+        closeModal('loginModal');
+        checkLoginStatus(); // Меняем кнопки вместо перезагрузки
+      } else {
+        error.innerText = 'Неверный ник или пароль.';
+      }
+    }
+
+    // === ВЫХОД ===
+    function doLogout() {
+      localStorage.removeItem('isLoggedIn');
+      checkLoginStatus();
+    }
+
+    // === ЛАПКА ===
+    const paw = document.querySelector('.flying-paw');
+    const totalFrames = 10;
+    const speed = 100;
+    let currentFrame = 1;
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image(); img.src = 'paw' + i + '.png';
+    }
+    document.addEventListener('mousemove', (e) => {
+      paw.style.left = e.clientX + 'px';
+      paw.style.top = e.clientY + 'px';
+    });
+    setInterval(() => {
+      paw.style.backgroundImage = `url('paw${currentFrame}.png')`;
+      currentFrame++;
+      if (currentFrame > totalFrames) currentFrame = 1;
+    }, speed);
+
+    // === СКРЫТИЕ КУРСОРА ===
+    function hideCursorEverywhere() {
+      document.querySelectorAll('*').forEach(el => el.style.cursor = 'none');
+    }
+    hideCursorEverywhere();
+    const observer = new MutationObserver(() => hideCursorEverywhere());
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // === ПЛЕЕР ===
+    const audio = document.getElementById('myMusic');
+    const savedTime = localStorage.getItem('musicTime');
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
+
+    if (savedTime) audio.currentTime = parseFloat(savedTime);
+
+    if (wasPlaying) {
+      audio.play().catch(() => {
+        document.body.addEventListener('click', () => audio.play(), { once: true });
+      });
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      localStorage.setItem('musicTime', audio.currentTime);
+    });
+    audio.addEventListener('play', () => {
+      localStorage.setItem('musicPlaying', 'true');
+    });
+    audio.addEventListener('pause', () => {
+      localStorage.setItem('musicPlaying', 'false');
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Моя личная страничка</title>
+  <style>
+    @font-face {
+      font-family: 'MyHandFont';
+      src: url('myfont.ttf') format('truetype');
+    }
+
+    body {
+      position: relative;
+      background-color: #1a1a2e;
+      background-image: url('fon.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #ffd1dc;
+      font-family: 'MyHandFont', 'Comic Sans MS', cursive;
+      text-align: left;
+      padding: 90px 20px 20px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      cursor: none !important;
+    }
+
+    *, *::before, *::after { cursor: none !important; }
+    audio, audio::-webkit-media-controls { cursor: none !important; }
+
+    .top-gif-frame {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 70px;
+      background-image: url('top-frame.gif');
+      background-repeat: repeat-x;
+      background-position: top center;
+      background-size: auto 100%;
+      z-index: 9990;
+      pointer-events: none;
+    }
+
+    .flying-paw {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 2147483647;
+      transform: translate(-50%, -50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.05s ease-out;
+      background-image: url('paw1.png');
+      filter: saturate(1.6) contrast(1.1) drop-shadow(0 0 4px #ffb6c1);
+    }
+
+    .side-menu {
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 10px 15px;
+      border-radius: 10px;
+      text-align: left;
+      width: 200px;
+      margin-bottom: 15px;
+    }
+    .side-menu a { display: block; margin: 8px 0; color: #ffc0cb; }
+
+    .top-menu {
+      margin: 0 0 20px 0;
+      width: 200px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .top-menu a {
+      color: #ffc0cb;
+      text-decoration: none;
+      background-color: rgba(255, 182, 193, 0.15);
+      border: 2px outset #ffb6c1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 1em;
+      text-align: center;
+    }
+    .top-menu a:hover {
+      background-color: rgba(255, 182, 193, 0.35);
+      color: #fff;
+    }
+
+    .posts-wrapper { margin: 0; max-width: 600px; }
+    .post {
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      margin: 0 0 40px 0;
+      padding: 25px 15px;
+      text-align: left;
+    }
+    .post::before {
+      content: '';
+      position: absolute;
+      top: -15px; left: 0;
+      width: 100%; height: 30px;
+      background-image: url('lace.png');
+      background-repeat: repeat-x;
+      background-position: top center;
+      background-size: auto 100%;
+      pointer-events: none;
+    }
+    .post::after {
+      content: '';
+      position: absolute;
+      bottom: -15px; left: 0;
+      width: 100%; height: 30px;
+      background-image: url('lace.png');
+      background-repeat: repeat-x;
+      background-position: bottom center;
+      background-size: auto 100%;
+      pointer-events: none;
+      transform: scaleY(-1);
+    }
+    
+    .post h2 { color: #ffd1dc; margin-top: 0; font-size: 1.3em; }
+    .date { color: #ffb6c1; font-size: 1em; font-style: italic; }
+    a { color: #ffc0cb; text-decoration: underline; }
+    a:hover { color: #ff9eb5; }
+    marquee {
+      background-color: #333; color: #ffd1dc;
+      padding: 5px; border: 2px inset #ffb6c1; margin-bottom: 15px;
+      font-size: 1.1em;
+    }
+
+    .player {
+      position: fixed;
+      bottom: 15px; right: 15px;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 6px; border-radius: 8px;
+      display: flex; align-items: center; gap: 6px;
+      width: 260px; height: 90px;
+    }
+    .player audio { width: 190px; height: 40px; }
+    .player audio::-webkit-media-controls-time-remaining-display,
+    .player audio::-webkit-media-controls-current-time-display { display: none; }
+    .player img {
+      width: 55px; height: 55px;
+      object-fit: cover; border: 2px solid #ffb6c1; border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-gif-frame"></div>
+  <div class="flying-paw"></div>
+
+  <marquee behavior="scroll" direction="left">✨ Добро пожаловать на мою страничку! ✨</marquee>
+
+  <div class="side-menu">
+    <a href="#">Гостевая книга (скоро)</a>
+    <a href="#">Мои друзья (скоро)</a>
+  </div>
+
+  <!-- Меню с кнопками возврата и фотоальбома -->
+  <div class="top-menu">
+    <a href="home.html">🏠 На главную</a>
+    <a href="album.html">📷 Фотоальбом</a>
+  </div>
+
+  <div class="posts-wrapper">
+    <div class="post">
+      <h2>Мой первый пост!</h2>
+      <p class="date">23.11.2026</p>
+      <p>Сегодня я создал свой первый сайт. Оказывается, это не так сложно! Скоро тут будет много всяких картинок и гифок.</p>
+      <img src="sticker.gif" alt="Стикер" style="max-width: 100px;">
+    </div>
+
+    <div class="post">
+      <h2>Кто я?</h2>
+      <p class="date">23.11.2026</p>
+      <p>Я просто человек, который любит старый интернет. Тут я буду выкладывать то, что мне нравится.</p>
+    </div>
+  </div>
+
+  <p style="font-size: 1em; color: #ffb6c1;">Счётчик посещений: <span id="counter">1</span></p>
+
+  <div class="player">
+    <img src="cover.jpg" alt="Обложка">
+    <audio controls loop id="myMusic">
+      <source src="music.mp3" type="audio/mpeg">
+      Твой браузер не поддерживает аудио.
+    </audio>
+  </div>
+
+  <script>
+    const paw = document.querySelector('.flying-paw');
+    const totalFrames = 10;
+    const speed = 100;
+    let currentFrame = 1;
+    for (let i = 1; i <= totalFrames; i++) {
+      const img = new Image(); img.src = 'paw' + i + '.png';
+    }
+    document.addEventListener('mousemove', (e) => {
+      paw.style.left = e.clientX + 'px';
+      paw.style.top = e.clientY + 'px';
+    });
+    setInterval(() => {
+      paw.style.backgroundImage = `url('paw${currentFrame}.png')`;
+      currentFrame++;
+      if (currentFrame > totalFrames) currentFrame = 1;
+    }, speed);
+
+    function hideCursorEverywhere() {
+      document.querySelectorAll('*').forEach(el => el.style.cursor = 'none');
+    }
+    hideCursorEverywhere();
+    const observer = new MutationObserver(() => hideCursorEverywhere());
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    const audio = document.getElementById('myMusic');
+    const savedTime = localStorage.getItem('musicTime');
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
+
+    if (savedTime) audio.currentTime = parseFloat(savedTime);
+
+    if (wasPlaying) {
+      audio.play().catch(() => {
+        document.body.addEventListener('click', () => audio.play(), { once: true });
+      });
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      localStorage.setItem('musicTime', audio.currentTime);
+    });
+    audio.addEventListener('play', () => {
+      localStorage.setItem('musicPlaying', 'true');
+    });
+    audio.addEventListener('pause', () => {
+      localStorage.setItem('musicPlaying', 'false');
+    });
+
+    let count = localStorage.getItem('visit_count') || 1;
+    document.getElementById('counter').innerText = count;
+    localStorage.setItem('visit_count', Number(count) + 1);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Моя страничка</title>
+  <style>
+    @font-face {
+      font-family: 'MyHandFont';
+      src: url('myfont.ttf') format('truetype');
+    }
+
+    body {
+      position: relative;
+      background-color: #1a1a2e;
+      background-image: url('fon.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #ffd1dc;
+      font-family: 'MyHandFont', 'Comic Sans MS', cursive;
+      text-align: left;
+      padding: 90px 20px 20px 20px;
+      min-height: 100vh;
+      box-sizing: border-box;
+      cursor: none !important;
+    }
+
+    *, *::before, *::after { cursor: none !important; }
+    audio, audio::-webkit-media-controls { cursor: none !important; }
+
+    .top-gif-frame {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 70px;
+      background-image: url('top-frame.gif');
+      background-repeat: repeat-x;
+      background-position: top center;
+      background-size: auto 100%;
+      z-index: 9990;
+      pointer-events: none;
+    }
+
+    .flying-paw {
+      position: fixed;
+      width: 40px;
+      height: 40px;
+      pointer-events: none;
+      z-index: 2147483647;
+      transform: translate(-50%, -50%);
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: transform 0.05s ease-out;
+      background-image: url('paw1.png');
+      filter: saturate(1.6) contrast(1.1) drop-shadow(0 0 4px #ffb6c1);
+    }
+
+    /* ===== ВЕРХНЕЕ МЕНЮ ===== */
+    .top-menu {
+      margin: 0 0 20px 0;
+      max-width: 600px;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+    .top-menu a {
+      color: #ffc0cb;
+      text-decoration: none;
+      background-color: rgba(255, 182, 193, 0.15);
+      border: 2px outset #ffb6c1;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 1em;
+      text-align: center;
+    }
+    .top-menu a:hover {
+      background-color: rgba(255, 182, 193, 0.35);
+      color: #fff;
+    }
+
+    /* ===== ФОРМА ДОБАВЛЕНИЯ ПОСТА ===== */
+    .post-form {
+      background-color: rgba(0, 0, 0, 0.8);
+      border: 3px outset #ffb6c1;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
+    .post-form h3 { margin-top: 0; color: #ffb6c1; }
+    .post-form input, .post-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px inset #ffb6c1;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    .post-form input[type="file"] {
+      background-color: transparent;
+      border: none;
+      color: #ffd1dc;
+    }
+    .post-form button {
+      background-color: rgba(255, 105, 180, 0.6);
+      color: #fff;
+      border: 2px outset #ffb6c1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-size: 1.1em;
+      font-family: inherit;
+      cursor: none !important;
+    }
+
+    /* ===== ЛЕНТА ПОСТОВ ===== */
+    .posts-wrapper { margin: 0; max-width: 600px; }
+    .post {
+      position: relative;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      margin: 0 0 40px 0;
+      padding: 25px 15px;
+      text-align: left;
+    }
+    .post::before, .post::after {
+      content: '';
+      position: absolute;
+      left: 0; width: 100%; height: 30px;
+      background-image: url('lace.png');
+      background-repeat: repeat-x;
+      pointer-events: none;
+      background-size: auto 100%;
+    }
+    .post::before { top: -15px; background-position: top center; }
+    .post::after { bottom: -15px; background-position: bottom center; transform: scaleY(-1); }
+    
+    .post h2 { color: #ffd1dc; margin-top: 0; font-size: 1.3em; }
+    .post img { max-width: 100%; border-radius: 5px; margin-top: 10px; border: 2px solid #ffb6c1; }
+
+    /* ===== ПЛЕЕР ===== */
+    .player {
+      position: fixed;
+      bottom: 15px; right: 15px;
+      z-index: 1000;
+      background-color: rgba(0, 0, 0, 0.7);
+      border: 3px outset #ffb6c1;
+      padding: 6px; border-radius: 8px;
+      display: flex; align-items: center; gap: 6px;
+      width: 260px; height: 90px;
+    }
+    .player audio { width: 190px; height: 40px; }
+    .player audio::-webkit-media-controls-time-remaining-display,
+    .player audio::-webkit-media-controls-current-time-display { display: none; }
+    .player img { width: 55px; height: 55px; object-fit: cover; border: 2px solid #ffb6c1; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="top-gif-frame"></div>
+  <div class="flying-paw"></div>
+
+  <!-- Меню -->
+  <div class="top-menu">
+    <a href="home.html">🏠 На главную</a>
+    <a href="album.html">📷 Фотоальбом</a>
+    <a href="#" onclick="logout()">🚪 Выйти</a>
+  </div>
+
+  <!-- Форма для нового поста -->
+  <div class="post-form">
+    <h3>Создать новый пост</h3>
+    <input type="text" id="postTitle" placeholder="Заголовок поста">
+    <textarea id="postText" rows="3" placeholder="Текст поста..."></textarea>
+    
+    <!-- Загрузка фото/гифки -->
+    <input type="file" id="postImage" accept="image/*">
+    
+    <button onclick="addPost()">Опубликовать</button>
+  </div>
+
+  <!-- Лента постов -->
+  <div class="posts-wrapper" id="postsContainer">
+    <!-- Сюда будут добавляться посты -->
+  </div>
+
+  <!-- Плеер -->
+  <div class="player">
+    <img src="cover.jpg" alt="Обложка">
+    <audio controls loop id="myMusic">
+      <source src="music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <script>
+    // === ЛОГИКА ДОБАВЛЕНИЯ ПОСТОВ ===
+    const postsContainer = document.getElementById('postsContainer');
+    const currentUser = localStorage.getItem('userNick') || 'Гость';
+
+    // 1. Загрузка постов при открытии страницы
+    function loadPosts() {
+      postsContainer.innerHTML = ''; // Очищаем
+      // Получаем посты конкретно этого пользователя
+      let userPosts = JSON.parse(localStorage.getItem('posts_' + currentUser)) || [];
+      
+      userPosts.forEach(post => {
+        const postHTML = `
+          <div class="post">
+            <h2>${post.title}</h2>
+            <p>${post.text}</p>
+            ${post.image ? `<img src="${post.image}" alt="Картинка">` : ''}
+          </div>
+        `;
+        postsContainer.innerHTML += postHTML;
+      });
+    }
+
+    // 2. Добавление нового поста
+    function addPost() {
+      const title = document.getElementById('postTitle').value.trim();
+      const text = document.getElementById('postText').value.trim();
+      const fileInput = document.getElementById('postImage');
+      
+      if (!title || !text) {
+        alert('Заполните заголовок и текст поста!');
+        return;
+      }
+
+      // Читаем картинку, если она выбрана
+      if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          savePost(title, text, e.target.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        savePost(title, text, null);
+      }
+    }
+
+    function savePost(title, text, imageBase64) {
+      let userPosts = JSON.parse(localStorage.getItem('posts_' + currentUser)) || [];
+      
+      userPosts.unshift({ // Новые посты сверху
+        title: title,
+        text: text,
+        image: imageBase64,
+        date: new Date().toLocaleDateString()
+      });
+      
+      // Сохраняем обратно в localStorage (лимит ~5МБ, поэтому лучше не грузить огромные фото)
+      try {
+        localStorage.setItem('posts_' + currentUser, JSON.stringify(userPosts));
+        loadPosts(); // Обновляем ленту
+        // Очищаем форму
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postText').value = '';
+        document.getElementById('postImage').value = '';
+      } catch(e) {
+        alert('Ошибка: Картинка слишком большая. Попробуйте фото меньшего размера.');
+      }
+    }
+
+    // Загружаем посты при старте
+    loadPosts();
+
+    // === ВЫХОД ===
+    function logout() {
+      localStorage.removeItem('userNick');
+      localStorage.removeItem('userPass');
+      window.location.href = 'home.html';
+    }
+
+    // === ЛАПКА, КУРСОР И ПЛЕЕР (СТАНДАРТНЫЙ КОД) ===
+    const paw = document.querySelector('.flying-paw');
+    const totalFrames = 10; const speed = 100; let currentFrame = 1;
+    for (let i = 1; i <= totalFrames; i++) { const img = new Image(); img.src = 'paw' + i + '.png'; }
+    document.addEventListener('mousemove', (e) => { paw.style.left = e.clientX + 'px'; paw.style.top = e.clientY + 'px'; });
+    setInterval(() => { paw.style.backgroundImage = `url('paw${currentFrame}.png')`; currentFrame++; if (currentFrame > totalFrames) currentFrame = 1; }, speed);
+
+    function hideCursorEverywhere() { document.querySelectorAll('*').forEach(el => el.style.cursor = 'none'); }
+    hideCursorEverywhere(); const observer = new MutationObserver(() => hideCursorEverywhere()); observer.observe(document.body, { childList: true, subtree: true });
+
+    const audio = document.getElementById('myMusic');
+    const savedTime = localStorage.getItem('musicTime');
+    const wasPlaying = localStorage.getItem('musicPlaying') === 'true';
+    if (savedTime) audio.currentTime = parseFloat(savedTime);
+    if (wasPlaying) audio.play().catch(() => { document.body.addEventListener('click', () => audio.play(), { once: true }); });
+    audio.addEventListener('timeupdate', () => { localStorage.setItem('musicTime', audio.currentTime); });
+    audio.addEventListener('play', () => { localStorage.setItem('musicPlaying', 'true'); });
+    audio.addEventListener('pause', () => { localStorage.setItem('musicPlaying', 'false'); });
+  </script>
+
+</body>
+</html>
